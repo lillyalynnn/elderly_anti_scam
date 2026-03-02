@@ -1,17 +1,16 @@
-# 原有核心依赖
+# 指定平台和Python版本的预编译wheel
+--only-binary :all:
 fastapi==0.104.1
-uvicorn==0.24.0
+uvicorn[standard]==0.24.0
 requests==2.31.0
 beautifulsoup4==4.12.2
 pydantic==2.5.0
-pydantic-core==2.14.0
+pydantic-core==2.14.0 ; python_version < "3.13"
 starlette==0.27.0
 anyio==4.0.0
 typing-extensions==4.8.0
 python-multipart==0.0.6
 aiohttp==3.9.0
-
-# === 多模态处理与Gemini API 新增依赖 ===
-google-generativeai==0.5.0  # Gemini官方Python SDK
-Pillow==10.1.0              # 图像处理（用于预览、验证）
-httpx==0.26.0               # 异步HTTP客户端（用于高效下载媒体文件）
+google-generativeai==0.5.0
+Pillow==10.1.0
+httpx==0.26.0

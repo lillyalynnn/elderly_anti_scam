@@ -1,27 +1,16 @@
 services:
   - type: web
-    name: elderly-anti-scam-gemini
+    name: elderly-anti-scam
     env: python
-    runtime: python
     plan: free
-    branch: main
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000 --workers 1
-    # 注意：Gemini 1.5 Flash 模型调用可能涉及较大文件上传，确保实例内存足够（免费计划可能受限）。
+    buildCommand: |
+      export PIP_CACHE_DIR=/tmp/pip-cache
+      pip install --cache-dir /tmp/pip-cache -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
     envVars:
-      # 原有配置
-      - key: MAX_CONTENT_LENGTH
-        value: "5000"
-      - key: CACHE_DURATION
-        value: "300"
-      - key: FAMILY_GUARDIAN_ENABLED
-        value: "true"
-      - key: COMPLIANCE_STRICT_MODE
-        value: "true"
-      # Gemini 多模态新增配置
+      - key: PIP_CACHE_DIR
+        value: /tmp/pip-cache
+      - key: TMPDIR
+        value: /tmp
       - key: GEMINI_API_KEY
-        sync: false  # 关键！请务必在Render控制台为此服务设置此环境变量，值为您申请的Google AI Studio API密钥
-      - key: SERVER_HOST
-        value: "0.0.0.0"
-      - key: SERVER_PORT
-        value: "10000"
+        sync: false

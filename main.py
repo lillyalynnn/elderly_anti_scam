@@ -129,7 +129,7 @@ class GeminiMultimodalAnalyzer:
             raise ValueError("Gemini API密钥未提供。请设置环境变量 GEMINI_API_KEY")
 
         genai.configure(api_key=self.api_key)
-        self.model_name = "models/gemini-1.5-flash"
+        self.model_name = "gemini-3-flash"
         self.model = genai.GenerativeModel(self.model_name)
         self.http_client = requests.Session()
         logger.info(f"Gemini多模态分析器初始化完成，使用模型: {self.model_name}")

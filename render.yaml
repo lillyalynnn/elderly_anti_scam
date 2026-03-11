@@ -1,12 +1,14 @@
 services:
   - type: web
-    name: elderly-anti-scam
+    name: elderly-anti-scam-pro
     env: python
     plan: free
     buildCommand: |
-      export PIP_CACHE_DIR=/tmp/pip-cache
-      pip install --cache-dir /tmp/pip-cache -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+      # 升级 pip 并设置缓存以加速构建
+      python -m pip install --upgrade pip
+      # 安装项目依赖
+      pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000 --workers 1
     envVars:
       - key: PIP_CACHE_DIR
         value: /tmp/pip-cache
@@ -14,3 +16,12 @@ services:
         value: /tmp
       - key: GEMINI_API_KEY
         sync: false
+        value: YOUR_GEMINI_API_KEY_HERE  # 请在Render控制台替换为您的真实密钥
+      - key: MAX_CONTENT_LENGTH
+        value: "10000"
+      - key: CACHE_DURATION
+        value: "300"
+      - key: RENDER
+        value: "true"
+    healthCheckPath: /health
+    autoDeploy: true
